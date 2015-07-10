@@ -1,0 +1,41 @@
+mconf:
+  build: mconf
+#  dockerfile: Dockerfile.renv
+  ports:
+  - "80:80"
+# If running behind a proxy container, expose the ports instead
+# and link the proxy container to this one.
+#  expose: 
+#  - "80"
+  links:
+  - mariadb:mariadb
+  - postfix:postfix
+  - redis:redis
+#   - bbb:bbb
+#   volumes:
+#   - "/home/juancho/git/docker/docker-otrs/otrs/backup:/var/otrs/backups"
+#   env_file: otrs-setup.env
+# # If you want to run the installer, uncomment this:
+  environment:
+      MCONF_INSTALL: "yes"
+      MCONF_DB_PASSWORD: changeme
+# # If you want to restore a backup, uncomment this:
+#   environment:
+#       MCONF_INSTALL: "restore"
+#       MCONF_BACKUP_NAME: ""
+  privileged: true
+mariadb:
+  build: mariadb
+  expose:
+  - "3306"
+  volumes:
+  - /var/lib/mysql
+  environment:
+      MYSQL_ROOT_PASSWORD: changeme
+postfix:
+   image: juanluisbaptiste/postfix:latest
+   expose: 
+   - "25"
+   env_file: credentials-smtp.env
+redis:
+   image: redis:latest

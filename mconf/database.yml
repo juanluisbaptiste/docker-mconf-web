@@ -1,0 +1,10 @@
+# mysql2 for all environments
+
+production:
+  adapter: mysql2
+#  url: mysql2://mariadb/mconf
+  database: mconf           # MySQL database name
+  username: mconf                      # MySQL database user
+  password: changeme                # MySQL database password
+  host: mariadb
+  socket: /var/run/mysqld/mysqld.sock
