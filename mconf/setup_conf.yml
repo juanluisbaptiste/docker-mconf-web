@@ -28,21 +28,23 @@ default:
   # If not specified, the SMTP configurations will default to a Gmail account.
   site:
     name: "Mconf"
-    # description: "Mconf Website"
+    description: "Mconf Website"
     # smtp_login: "my-email@server.com"
     # smtp_password: "my-password"
-    # locale: "en"
-    # domain: "localhost"
+    locale: "en"
+    domain: "mconf.example.com"
     # analytics_code: ""                         # Google Analytics tracking code. Leave it empty to disable.
                                                 # Use the format: "UA-12345678-9".
     feedback_url: ""    
     smtp_server: postfix
     smtp_port: 25
+    smtp_domain: example.com
+    smtp_sender: noreply@example.com
     smtp_use_tls: false
     smtp_auto_tls: false
-    #smtp_auth_type: none
-    # signature: "Mconf"
-    # ssl: false
+    smtp_auth_type: none
+    signature: "Mconf"
+    ssl: false
 
   # The first and default webconference server.
   # You can set any attribute from the model BigbluebuttonServer here.
