@@ -20,12 +20,18 @@ COPY /etc/supervisor/conf.d/httpd.conf /etc/supervisor/conf.d/
 # Add run script
 COPY run.sh /
 RUN chmod 755 /run.sh
+
+#Add apache2 configuration
 COPY etc/apache2/apache2.conf /etc/apache2/
 COPY etc/apache2/sites-available/mconf-web /etc/apache2/sites-available/
 #COPY passenger.load /etc/apache2/mods-available/
+
+#Create mconf user for app
 RUN useradd -ms /bin/bash mconf
 RUN adduser mconf www-data
 RUN chown -R mconf:www-data /var/www/
+
+#Create backup scrpts directories
 RUN mkdir -p /opt/mconf/{scripts,backups}/ && \ 
     mkdir -p /opt/mconf/var/tmp && \
     touch /opt/mconf/var/tmp/firsttime
@@ -66,6 +72,7 @@ RUN a2enmod rewrite && \
     a2enmod xsendfile
 RUN mv /etc/apache2/sites-available/mconf-web /etc/apache2/sites-available/mconf-web.conf
 RUN a2ensite mconf-web
+
 USER mconf
 EXPOSE 80
 VOLUME ["/opt/mconf/var"]
