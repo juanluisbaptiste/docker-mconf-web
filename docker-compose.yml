@@ -1,6 +1,5 @@
 mconf:
   build: mconf
-#  dockerfile: Dockerfile.renv
   ports:
   - "80:80"
 # If running behind a proxy container, expose the ports instead
@@ -13,8 +12,6 @@ mconf:
   - redis:redis
 #   - bbb:bbb
 #   volumes:
-#   - "/home/juancho/git/docker/docker-otrs/otrs/backup:/var/otrs/backups"
-#   env_file: otrs-setup.env
 # # If you want to run the installer, uncomment this:
   environment:
       MCONF_INSTALL: "yes"
