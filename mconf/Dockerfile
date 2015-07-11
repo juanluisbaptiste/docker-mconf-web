@@ -13,8 +13,8 @@ RUN apt-get install -y apache2 apache2-prefork-dev libapr1-dev libaprutil1-dev \
     libcurl4-openssl-dev libapache2-mod-xsendfile wget make curl \ 
     git-core libruby aspell-es aspell-en libxml2-dev \
     libxslt1-dev libmagickcore-dev libmagickwand-dev imagemagick libmysqlclient-dev \
-    zlib1g-dev build-essential libqtwebkit-dev libreadline-dev \
-    libsqlite3-dev libssl-dev libffi-dev mysql-client vim supervisor
+    zlib1g-dev build-essential nfs-common libqtwebkit-dev libreadline-dev libffi-dev  \
+    openjdk-7-jre libsqlite3-dev libssl-dev libffi-dev mysql-client vim supervisor
                       
 COPY httpd.conf /etc/supervisor/conf.d/
 # Add run script
