@@ -11,12 +11,14 @@ RUN apt-get -y update
 RUN apt-get -y dist-upgrade
 RUN apt-get install -y apache2 apache2-prefork-dev libapr1-dev libaprutil1-dev \
     libcurl4-openssl-dev libapache2-mod-xsendfile wget make curl \ 
-    git-core libruby aspell-es aspell-en libxml2-dev \
+    git-core libruby aspell-es aspell-en libxml2-dev monit logrotate \
     libxslt1-dev libmagickcore-dev libmagickwand-dev imagemagick libmysqlclient-dev \
     zlib1g-dev build-essential nfs-common libqtwebkit-dev libreadline-dev libffi-dev  \
     openjdk-7-jre libsqlite3-dev libssl-dev libffi-dev mysql-client vim supervisor
                       
 COPY /etc/supervisor/conf.d/httpd.conf /etc/supervisor/conf.d/
+COPY /etc/supervisor/conf.d/monit.conf /etc/supervisor/conf.d/
+
 # Add run script
 COPY run.sh /
 RUN chmod 755 /run.sh
@@ -35,7 +37,24 @@ RUN chown -R mconf:www-data /var/www/
 RUN mkdir -p /opt/mconf/{scripts,backups}/ && \ 
     mkdir -p /opt/mconf/var/tmp && \
     touch /opt/mconf/var/tmp/firsttime
-RUN echo "mconf ALL=(ALL) NOPASSWD:ALL"  >> /etc/sudoers    
+
+#Add to sudoers
+RUN echo "mconf ALL=(ALL) NOPASSWD:ALL"  >> /etc/sudoers
+
+#Configure monit
+RUN sed -i -re 's/(daemon)\s+\w+/\1 60/gi' /etc/monit/monitrc
+RUN sed -i '/set httpd port 2812/s/^#//g' /etc/monit/monitrc
+RUN sed -i '/use address localhost/s/^#//g' /etc/monit/monitrc
+RUN sed -i '/allow localhost/s/^#//g' /etc/monit/monitrc
+RUN wget https://raw.github.com/mconf/mconf-web/master/config/monit/resque_workers.monitrc -O /etc/monit/conf.d/resque_workers.monitrc
+RUN sed -i -e "s/\/mconf-web\/current/\/mconf-web/g" /etc/monit/conf.d/resque_workers.monitrc
+
+#configure logrotate
+RUN wget https://raw.github.com/mconf/mconf-web/master/config/logrotate/mconf-web -O /etc/logrotate.d/mconf-web
+RUN chown root:root /etc/logrotate.d/mconf-web
+RUN chmod 644 /etc/logrotate.d/mconf-web
+RUN logrotate -s /var/lib/logrotate/status /etc/logrotate.d/mconf-web
+
 #Mconf installation
 USER mconf
 RUN git clone git://github.com/sstephenson/rbenv.git ~/.rbenv
