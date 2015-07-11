@@ -16,12 +16,12 @@ RUN apt-get install -y apache2 apache2-prefork-dev libapr1-dev libaprutil1-dev \
     zlib1g-dev build-essential nfs-common libqtwebkit-dev libreadline-dev libffi-dev  \
     openjdk-7-jre libsqlite3-dev libssl-dev libffi-dev mysql-client vim supervisor
                       
-COPY httpd.conf /etc/supervisor/conf.d/
+COPY /etc/supervisor/conf.d/httpd.conf /etc/supervisor/conf.d/
 # Add run script
 COPY run.sh /
 RUN chmod 755 /run.sh
 COPY etc/apache2/apache2.conf /etc/apache2/
-COPY mconf-web /etc/apache2/sites-available/
+COPY etc/apache2/sites-available/mconf-web /etc/apache2/sites-available/
 #COPY passenger.load /etc/apache2/mods-available/
 RUN useradd -ms /bin/bash mconf
 RUN adduser mconf www-data
