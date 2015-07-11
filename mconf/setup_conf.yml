@@ -37,6 +37,7 @@ default:
                                                 # Use the format: "UA-12345678-9".
     feedback_url: ""    
     smtp_server: postfix
+    smtp_port: 25
     smtp_use_tls: false
     smtp_auto_tls: false
     #smtp_auth_type: none
