@@ -25,13 +25,15 @@ RUN chmod 755 /run.sh
 
 #Add apache2 configuration
 COPY etc/apache2/apache2.conf /etc/apache2/
-COPY etc/apache2/sites-available/mconf-web /etc/apache2/sites-available/
-#COPY passenger.load /etc/apache2/mods-available/
+COPY etc/apache2/sites-available/mconf-web.conf /etc/apache2/sites-available/
+RUN a2enmod rewrite && \ 
+    a2enmod xsendfile && \
+    a2ensite mconf-web
 
 #Create mconf user for app
-RUN useradd -ms /bin/bash mconf
-RUN adduser mconf www-data
-RUN chown -R mconf:www-data /var/www/
+RUN useradd -ms /bin/bash mconf && \
+    adduser mconf www-data && \
+    chown -R mconf:www-data /var/www/
 
 #Create backup scrpts directories
 RUN mkdir -p /opt/mconf/{scripts,backups}/ && \ 
@@ -42,47 +44,46 @@ RUN mkdir -p /opt/mconf/{scripts,backups}/ && \
 RUN echo "mconf ALL=(ALL) NOPASSWD:ALL"  >> /etc/sudoers
 
 #Configure monit
-RUN sed -i -re 's/(daemon)\s+\w+/\1 60/gi' /etc/monit/monitrc
-RUN sed -i '/set httpd port 2812/s/^#//g' /etc/monit/monitrc
-RUN sed -i '/use address localhost/s/^#//g' /etc/monit/monitrc
-RUN sed -i '/allow localhost/s/^#//g' /etc/monit/monitrc
-RUN wget https://raw.github.com/mconf/mconf-web/master/config/monit/resque_workers.monitrc -O /etc/monit/conf.d/resque_workers.monitrc
-RUN sed -i -e "s/\/mconf-web\/current/\/mconf-web/g" /etc/monit/conf.d/resque_workers.monitrc
+RUN sed -i -re 's/(daemon)\s+\w+/\1 60/gi' /etc/monit/monitrc && \
+    sed -i '/set httpd port 2812/s/^#//g' /etc/monit/monitrc && \
+    sed -i '/use address localhost/s/^#//g' /etc/monit/monitrc && \
+    sed -i '/allow localhost/s/^#//g' /etc/monit/monitrc && \
+    wget https://raw.github.com/mconf/mconf-web/master/config/monit/resque_workers.monitrc -O /etc/monit/conf.d/resque_workers.monitrc && \
+    sed -i -e "s/\/mconf-web\/current/\/mconf-web/g" /etc/monit/conf.d/resque_workers.monitrc
 
 #configure logrotate
-RUN wget https://raw.github.com/mconf/mconf-web/master/config/logrotate/mconf-web -O /etc/logrotate.d/mconf-web
-RUN chown root:root /etc/logrotate.d/mconf-web
-RUN chmod 644 /etc/logrotate.d/mconf-web
-RUN logrotate -s /var/lib/logrotate/status /etc/logrotate.d/mconf-web
+RUN wget https://raw.github.com/mconf/mconf-web/master/config/logrotate/mconf-web -O /etc/logrotate.d/mconf-web && \ 
+    chown root:root /etc/logrotate.d/mconf-web && \
+    chmod 644 /etc/logrotate.d/mconf-web && \
+    logrotate -s /var/lib/logrotate/status /etc/logrotate.d/mconf-web
 
 #Mconf installation
 USER mconf
-RUN git clone git://github.com/sstephenson/rbenv.git ~/.rbenv
-RUN echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
-RUN echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+RUN git clone git://github.com/sstephenson/rbenv.git ~/.rbenv && \
+    echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile &&  \
+    echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
 # install ruby build
 RUN git clone git://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
 # install ruby
-RUN bash -l -c "rbenv install 2.2.0"
-RUN bash -l -c "rbenv rehash"
-# set this version of ruby as the default and check it is correct
-RUN bash -l -c "rbenv global 2.2.0"
-RUN bash -l -c "rbenv version"
+RUN bash -l -c "rbenv install 2.2.0" && \
+    bash -l -c "rbenv rehash" && \
+    bash -l -c "rbenv global 2.2.0" && \
+    bash -l -c "rbenv version"
 # install bundler
-RUN bash -l -c "gem install bundler -v '1.7.2'"
-RUN bash -l -c "rbenv rehash"
+RUN bash -l -c "gem install bundler -v '1.7.2'" && \
+    bash -l -c "rbenv rehash"
 WORKDIR /var/www
 #Download mconf latest
-RUN bash -l -c "git clone git://github.com/mconf/mconf-web.git"
-RUN chown -R mconf:www-data /var/www/mconf-web
+RUN bash -l -c "git clone git://github.com/mconf/mconf-web.git" && \
+    chown -R mconf:www-data /var/www/mconf-web
 WORKDIR /var/www/mconf-web/
 #Install mconf
 RUN bash -l -c "bundle install --path vendor/bundle --without=development test"
 COPY database.yml /var/www/mconf-web/config/
 COPY setup_conf.yml /var/www/mconf-web/config/
-RUN bash -l -c "gem install passenger -v 4.0.59"
-RUN bash -l -c "rbenv rehash"
-RUN bash -l -c "passenger-install-apache2-module -a"
+RUN bash -l -c "gem install passenger -v 4.0.59" && \
+    bash -l -c "rbenv rehash" && \
+    bash -l -c "passenger-install-apache2-module -a"
 #Install passenger web server
 RUN bash -l -c "passenger-install-apache2-module --snippet | sudo tee /etc/apache2/conf-available/mconf-passenger.conf"
 USER root
