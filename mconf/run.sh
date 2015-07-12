@@ -15,9 +15,7 @@
 # To change the default database and admin interface user passwords you can define 
 # the following env vars too:
 # - MCONF_DB_PASSWORD to set the database password
-# - MCONF_ROOT_PASSWORD to set the admin user 'root@localhost' password. 
 #
-#env
 source /home/mconf/.bash_profile
 
 DEFAULT_MCONF_ADMIN_EMAIL="admin@example.com"
@@ -80,13 +78,6 @@ function load_defaults(){
   fi
 }
 
-function set_fetch_email_time(){
-  if [ ! -z $MCONF_POSTMASTER_FETCH_TIME ]; then
-    echo -e "Setting Postmaster fetch emails time to \e[92m$MCONF_POSTMASTER_FETCH_TIME\e[0m minutes"
-    /opt/mconf/scripts/otrs_postmaster_time.sh $MCONF_POSTMASTER_FETCH_TIME
-  fi
-}
-
 while true; do
   out="`$mysqlcmd -e "SELECT COUNT(*) FROM mysql.user;" 2>&1`"
   echo -e $out
@@ -102,14 +93,11 @@ done
 #If MCONF_INSTALL isn't defined load a default install
 if [ "$MCONF_INSTALL" != "yes" ]; then
   if [ "$MCONF_INSTALL" == "no" ]; then
-    if [ -e "/opt/otrs/var/tmp/firsttime" ]; then
+    if [ -e "/opt/mconf/var/tmp/firsttime" ]; then
       #Load default install
       echo -e "\n\e[92mStarting a clean\e[0m Mconf \e[92minstallation ready to be configured !!\n\e[0m"
       load_defaults
-      #Set default admin user password
-      echo -e "Setting password for default admin account root@localhost..."
-      /opt/otrs/bin/otrs.SetPassword.pl --agent root@localhost $MCONF_ROOT_PASSWORD
-      rm -fr /opt/otrs/var/tmp/firsttime
+      rm -fr /opt/mconf/var/tmp/firsttime
     fi  
   # If MCONF_INSTALL == restore, load the backup files in /opt/otrs/backups
   elif [ "$MCONF_INSTALL" == "restore" ];then
