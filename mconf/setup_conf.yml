@@ -20,8 +20,8 @@ default:
     email: "admin@default.com"
     password: "admin"
     # If you want to set attributes in the user's profile, do as done below
-    # profile_attributes:
-    #   full_name: "Mconf Admin"
+    profile_attributes:
+       full_name: "Mconf Admin"
 
   # The first, only and default Site model with general configurations for the website.
   # You can set any attribute from the model Site here.
@@ -33,7 +33,7 @@ default:
     # smtp_password: "my-password"
     locale: "en"
     domain: "mconf.example.com"
-    # analytics_code: ""                         # Google Analytics tracking code. Leave it empty to disable.
+    analytics_code: ""
                                                 # Use the format: "UA-12345678-9".
     feedback_url: ""    
     smtp_server: postfix
