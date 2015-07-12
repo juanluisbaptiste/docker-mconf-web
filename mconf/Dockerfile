@@ -86,12 +86,9 @@ RUN bash -l -c "gem install passenger -v 4.0.59" && \
     bash -l -c "passenger-install-apache2-module -a"
 #Install passenger web server
 RUN bash -l -c "passenger-install-apache2-module --snippet | sudo tee /etc/apache2/conf-available/mconf-passenger.conf"
+RUN sudo a2enconf mconf-passenger
+
 USER root
-RUN a2enconf mconf-passenger
-RUN a2enmod rewrite && \ 
-    a2enmod xsendfile
-RUN mv /etc/apache2/sites-available/mconf-web /etc/apache2/sites-available/mconf-web.conf
-RUN a2ensite mconf-web
 
 USER mconf
 EXPOSE 80
