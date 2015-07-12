@@ -16,6 +16,30 @@ mconf:
   environment:
       MCONF_INSTALL: "yes"
       MCONF_DB_PASSWORD: changeme
+      MCONF_ADMIN_USERNAME: root
+      MCONF_ADMIN_PASSWORD: changeme
+      MCONF_ADMIN_EMAIL: jbaptiste@cachesimple.com
+      MCONF_ADMIN_NAME: "Juan Luis Baptiste"
+      MCONF_SITE_NAME: "Plataforma de Videoconferencias - Apukay"
+      MCONF_SITE_DESC: ""
+      MCONF_SITE_LOCALE: "es-419"
+      MCONF_SITE_DOMAIN: "mconf.apukay.com"
+#       MCONF_SITE_FEEDBACK_URL: ""
+#       MCONF_SITE_ANALYTICS_CODE:
+#       MCONF_SITE_SMTP_SERVER:
+#       MCONF_SITE_SMTP_PORT:
+      MCONF_SITE_SMTP_DOMAIN: "apukay.com"
+      MCONF_SITE_SMTP_SENDER: "noreply@apukay.com"
+#       MCONF_SITE_SMTP_USE_TLS:
+#       MCONF_SITE_SMTP_AUTO_TLS:
+#       MCONF_SITE_SMTP_AUTH_TYPE:
+#       MCONF_SITE_SIGNATURE:
+#       MCONF_SITE_SSL:
+      MCONF_WEBCONF_NAME: "Apukay bbb"
+      MCONF_WEBCONF_SERVER: "meet.apukay.com"
+      MCONF_WEBCONF_SALT: 3d167370cc92657580ab7ccd632846b3
+#      MCONF_WEBCONF_VERSION: 0.8
+
 # # If you want to restore a backup, uncomment this:
 #   environment:
 #       MCONF_INSTALL: "restore"
