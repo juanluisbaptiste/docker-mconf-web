@@ -26,7 +26,7 @@ RUN a2enmod rewrite && \
     a2enmod xsendfile && \
     a2ensite mconf-web
 
-#Create mconf user for app
+#Create mconf user
 RUN useradd -ms /bin/bash mconf && \
     adduser mconf www-data && \
     chown -R mconf:www-data /var/www/
