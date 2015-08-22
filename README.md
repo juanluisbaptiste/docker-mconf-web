@@ -1,2 +1,4 @@
 # docker-mconf
-Unofficial docker image for Mconf videoconferencing project
+Unofficial docker image for Mconf Web Conferencing Platform.
+
+http://mconf.org
