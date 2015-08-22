@@ -19,10 +19,6 @@ RUN apt-get install -y apache2 apache2-prefork-dev libapr1-dev libaprutil1-dev \
 COPY /etc/supervisor/conf.d/httpd.conf /etc/supervisor/conf.d/
 COPY /etc/supervisor/conf.d/monit.conf /etc/supervisor/conf.d/
 
-# Add run script
-COPY run.sh /
-RUN chmod 755 /run.sh
-
 #Add apache2 configuration
 COPY etc/apache2/apache2.conf /etc/apache2/
 COPY etc/apache2/sites-available/mconf-web.conf /etc/apache2/sites-available/
@@ -89,6 +85,10 @@ RUN bash -l -c "passenger-install-apache2-module --snippet | sudo tee /etc/apach
 RUN sudo a2enconf mconf-passenger
 
 USER root
+# Add run script
+COPY run.sh /
+COPY functions.sh /
+RUN chmod 755 /*.sh
 
 USER mconf
 EXPOSE 80
