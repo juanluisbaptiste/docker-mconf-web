@@ -5,7 +5,11 @@ ENV TERM linux
 RUN locale-gen en_US.UTF-8  
 ENV LANG en_US.UTF-8  
 ENV LANGUAGE en_US:en  
-ENV LC_ALL en_US.UTF-8  
+ENV LC_ALL en_US.UTF-8
+ENV MCONF_USER mconf
+ENV MCONF_GROUP www-data
+ENV MCONF_ROOT /var/www/mconf-web/
+ENV MCONF_DB mconf
 
 RUN apt-get -y update
 RUN apt-get -y dist-upgrade
@@ -27,9 +31,9 @@ RUN a2enmod rewrite && \
     a2ensite mconf-web
 
 #Create mconf user
-RUN useradd -ms /bin/bash mconf && \
-    adduser mconf www-data && \
-    chown -R mconf:www-data /var/www/
+RUN useradd -ms /bin/bash ${MCONF_USER} && \
+    adduser ${MCONF_USER} $MCONF_GROUP && \
+    chown -R ${MCONF_USER}:$MCONF_GROUP /var/www/
 
 #Create backup scrpts directories
 RUN mkdir -p /opt/mconf/{scripts,backups}/ && \ 
@@ -37,7 +41,7 @@ RUN mkdir -p /opt/mconf/{scripts,backups}/ && \
     touch /opt/mconf/var/tmp/firsttime
 
 #Add to sudoers
-RUN echo "mconf ALL=(ALL) NOPASSWD:ALL"  >> /etc/sudoers
+RUN echo "${MCONF_USER} ALL=(ALL) NOPASSWD:ALL"  >> /etc/sudoers
 
 #Configure monit
 RUN sed -i -re 's/(daemon)\s+\w+/\1 60/gi' /etc/monit/monitrc && \
@@ -54,7 +58,7 @@ RUN wget https://raw.github.com/mconf/mconf-web/master/config/logrotate/mconf-we
     logrotate -s /var/lib/logrotate/status /etc/logrotate.d/mconf-web
 
 #Mconf installation
-USER mconf
+USER ${MCONF_USER}
 RUN git clone git://github.com/sstephenson/rbenv.git ~/.rbenv && \
     echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile &&  \
     echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
@@ -71,12 +75,12 @@ RUN bash -l -c "gem install bundler -v '1.7.2'" && \
 WORKDIR /var/www
 #Download mconf latest
 RUN bash -l -c "git clone git://github.com/mconf/mconf-web.git" && \
-    chown -R mconf:www-data /var/www/mconf-web
-WORKDIR /var/www/mconf-web/
+    chown -R ${MCONF_USER}:$MCONF_GROUP ${MCONF_ROOT}
+WORKDIR ${MCONF_ROOT}
 #Install mconf
 RUN bash -l -c "bundle install --path vendor/bundle --without=development test"
-COPY database.yml /var/www/mconf-web/config/
-COPY setup_conf.yml /var/www/mconf-web/config/
+COPY database.yml ${MCONF_ROOT}config/
+COPY setup_conf.yml ${MCONF_ROOT}config/
 RUN bash -l -c "gem install passenger -v 4.0.59" && \
     bash -l -c "rbenv rehash" && \
     bash -l -c "passenger-install-apache2-module -a"
@@ -90,7 +94,7 @@ COPY run.sh /
 COPY functions.sh /
 RUN chmod 755 /*.sh
 
-USER mconf
+USER ${MCONF_USER}
 EXPOSE 80
 VOLUME ["/opt/mconf/var"]
 CMD ["/run.sh"]
