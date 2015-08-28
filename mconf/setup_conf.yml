@@ -35,7 +35,7 @@ default:
     domain: "mconf.example.com"
     analytics_code: ""
                                                 # Use the format: "UA-12345678-9".
-    feedback_url: ""    
+    feedback_url: ""
     smtp_server: postfix
     smtp_port: 25
     smtp_domain: example.com

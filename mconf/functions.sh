@@ -65,8 +65,14 @@ function set_variable(){
   local section=$1
   local var=$2
   local value=$3
-  cd /var/www/mconf-web/config
+  cd ${MCONF_ROOT}config
   sed -i -r "/$section:$/,/^\[/ s/($var: *\").*/\1$value\"/" setup_conf.yml
+}
+
+function set_virtualhost_name(){
+  local option=$1
+  local value=$2
+  sudo sed -i -r "s/($option * *).*/\1$value/" /etc/apache2/sites-available/mconf-web.conf
 }
 
 function load_defaults(){
