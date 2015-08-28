@@ -9,7 +9,7 @@ ENV LC_ALL en_US.UTF-8
 ENV MCONF_USER mconf
 ENV MCONF_GROUP www-data
 ENV MCONF_ROOT /var/www/mconf-web/
-ENV MCONF_DB mconf
+ENV MCONF_DB_NAME mconf
 
 RUN apt-get -y update
 RUN apt-get -y dist-upgrade

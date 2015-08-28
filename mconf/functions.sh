@@ -15,9 +15,9 @@ mysqlcmd="mysql -uroot -h $MARIADB_PORT_3306_TCP_ADDR -p$MARIADB_ENV_MYSQL_ROOT_
 
 function create_db(){
   echo -e "Creating Mconf database..."
-  $mysqlcmd -e "CREATE DATABASE IF NOT EXISTS mconf;"
+  $mysqlcmd -e "CREATE DATABASE IF NOT EXISTS ${MCONF_DB_NAME};"
   [ $? -gt 0 ] && echo -e "\n\e[1;31mERROR:\e[0m Couldn't create Mconf database !!\n" && exit 1
-  $mysqlcmd -e " GRANT ALL ON mconf.* to 'mconf'@'%' identified by '$MCONF_DB_PASSWORD'";
+  $mysqlcmd -e " GRANT ALL ON ${MCONF_DB_NAME}.* to 'mconf'@'%' identified by '$MCONF_DB_PASSWORD'";
   [ $? -gt 0 ] && echo -e "\n\e[1;31mERROR:\e[0m Couldn't create database user !!\n" && exit 1
 }  
 
