@@ -38,6 +38,7 @@ mconf:
       MCONF_WEBCONF_NAME: "bbb"
       MCONF_WEBCONF_SERVER: "bbb.example.com"
       MCONF_WEBCONF_SALT: 3d167370cc92657580ab7ccd632846b3
+      MCONF_DISABLE_REGISTRATION: "yes"
 #      MCONF_WEBCONF_VERSION: 0.8
 
 # # If you want to restore a backup, uncomment this:
