@@ -29,7 +29,8 @@ RAILS_ENV=production bundle exec rake secret:reset
 bundle exec rake RAILS_ENV=production RAILS_GROUPS=assets assets:precompile
 set_virtualhost_name "ServerName" $MCONF_SITE_DOMAIN
 [ "$MCONF_DISABLE_REGISTRATION" == "yes" ] && disable_registration
-
+[ ! -z $BBB_ENV_SERVER_NAME ] && echo -e "Found linked BigBlueButton container, setting MCONF_WEBCONF_SERVER to: $BBB_ENV_SERVER_NAME" && MCONF_WEBCONF_SERVER=$BBB_ENV_SERVER_NAME
+[ ! -z $BBB_ENV_SERVER_SALT ] && echo -e "Found linked BigBlueButton container, setting MCONF_WEBCONF_SALT to: $BBB_ENV_SERVER_SALT" && MCONF_WEBCONF_SALT=$BBB_ENV_SERVER_SALT
 #Launch supervisord
 echo -e "Starting supervisord..."
 sudo supervisord -c /etc/supervisor/supervisord.conf

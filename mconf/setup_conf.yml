@@ -51,7 +51,7 @@ default:
   # Note: set these parameters even if you don't have a server yet, you can edit it later on.
   webconf_server:
     name: "Default Server"
-    url: "http://my-development-server/bigbluebutton/api"
+    url: "http://bbb/bigbluebutton/api"
     salt: "my-secret-salt"
     version: "0.8"
 
