@@ -26,7 +26,7 @@ function create_db(){
 # }
 
 function random_string(){
-  echo `cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 6 | head -n 1`
+  echo `cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 33 | head -n 1`
 }
 
 function set_variables(){
