@@ -61,3 +61,12 @@ postfix:
    env_file: credentials-smtp.env
 redis:
    image: redis:latest
+# bbb:
+#   image: juanluisbaptiste/bigbluebutton:latest
+#   expose:
+#   - "80:80"
+# # ports: 
+#   - "9123:9123"
+#   - "1935:1935"
+#   environment:
+#      SERVER_NAME: bbb.example.com
