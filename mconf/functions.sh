@@ -11,7 +11,9 @@ MCONF_BACKUP_DIR="/var/mconf/backups"
 
 [ -z "${MCONF_INSTALL}" ] && MCONF_INSTALL="no"
 
-mysqlcmd="mysql -uroot -h $MARIADB_PORT_3306_TCP_ADDR -p$MARIADB_ENV_MYSQL_ROOT_PASSWORD "
+mysql_params="-uroot -h $MARIADB_PORT_3306_TCP_ADDR -p$MARIADB_ENV_MYSQL_ROOT_PASSWORD "
+mysqlcmd="mysql $mysql_params"
+mysqldumpcmd="mysqldump $mysql_params"
 
 function create_db(){
   echo -e "Creating Mconf database..."
@@ -79,7 +81,7 @@ function load_defaults(){
   set_variables
 
   #Check if database doesn't exists yet (it could if this is a container redeploy)
-  $mysqlcmd -e 'use mconf'
+  $mysqlcmd -e "use ${MCONF_DB_NAME}"
   if [ $? -gt 0 ]; then
     create_db
   fi

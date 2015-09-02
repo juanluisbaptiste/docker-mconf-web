@@ -96,6 +96,8 @@ RUN chmod 755 /*.sh
 RUN touch ${MCONF_ROOT}tmp/restart.txt
 
 USER ${MCONF_USER}
+COPY mconf_backup.sh /
+
 EXPOSE 80
 VOLUME ["/opt/mconf/var"]
 CMD ["/run.sh"]
