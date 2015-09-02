@@ -99,5 +99,5 @@ USER ${MCONF_USER}
 COPY mconf_backup.sh /
 
 EXPOSE 80
-VOLUME ["/opt/mconf/var"]
+VOLUME ["/data"]
 CMD ["/run.sh"]
