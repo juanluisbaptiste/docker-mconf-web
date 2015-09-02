@@ -27,6 +27,7 @@ if [ ! -z $BBB_ENV_SERVER_NAME ]; then
   #doesn't resolve to the public IP address which isn't reachable from the container
   sudo bash -c "printf '%s\t%s\n' $BBB_PORT_80_TCP_ADDR $BBB_ENV_SERVER_NAME | cat >> /etc/hosts"
 fi
+[ ! -z $BBB_ENV_SERVER_SALT ] && echo -e "Found linked BigBlueButton container, setting MCONF_WEBCONF_SALT to: $BBB_ENV_SERVER_SALT" && MCONF_WEBCONF_SALT=$BBB_ENV_SERVER_SALT
 load_defaults
 #Finish mconf installation
 cd /var/www/mconf-web/
