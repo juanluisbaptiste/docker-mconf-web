@@ -93,6 +93,7 @@ USER root
 COPY run.sh /
 COPY functions.sh /
 RUN chmod 755 /*.sh
+RUN touch ${MCONF_ROOT}tmp/restart.txt
 
 USER ${MCONF_USER}
 EXPOSE 80
