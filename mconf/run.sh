@@ -7,20 +7,10 @@
 
 . /functions.sh
 
-while true; do
-  out="`$mysqlcmd -e "SELECT COUNT(*) FROM mysql.user;" 2>&1`"
-  echo -e $out
-  echo "$out" | grep "COUNT"
-  if [ $? -eq 0 ]; then
-    echo -e "\n\e[92mServer is up !\e[0m\n"
-    break
-  fi
-  echo -e "\nDB server still isn't up, sleeping a little bit ...\n"
-  sleep 2
-done
+wait_for_database
 
-#If neither of previous cases is true the installer will be run.
 echo -e "\n\e[92mStarting \e[0m Mconf \e[92mWeb Conferencing Platform !!\n\e[0m"
+
 if [ ! -z $BBB_ENV_SERVER_NAME ]; then
   echo -e "Found linked BigBlueButton container, setting MCONF_WEBCONF_SERVER to: $BBB_ENV_SERVER_NAME" && MCONF_WEBCONF_SERVER=$BBB_ENV_SERVER_NAME
   #We map BBB_ENV_SERVER_NAME to the IP address of the linked container so it

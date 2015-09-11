@@ -15,6 +15,20 @@ mysql_params="-uroot -h $MARIADB_PORT_3306_TCP_ADDR -p$MARIADB_ENV_MYSQL_ROOT_PA
 mysqlcmd="mysql $mysql_params"
 mysqldumpcmd="mysqldump $mysql_params"
 
+function wait_for_database(){
+  while true; do
+    out="`$mysqlcmd -e "SELECT COUNT(*) FROM mysql.user;" 2>&1`"
+    echo -e $out
+    echo "$out" | grep "COUNT"
+    if [ $? -eq 0 ]; then
+      echo -e "\n\e[92mServer is up !\e[0m\n"
+      break
+    fi
+    echo -e "\nDB server still isn't up, sleeping a little bit ...\n"
+    sleep 2
+  done
+}
+
 function create_db(){
   echo -e "Creating Mconf database..."
   $mysqlcmd -e "CREATE DATABASE IF NOT EXISTS ${MCONF_DB_NAME};"
