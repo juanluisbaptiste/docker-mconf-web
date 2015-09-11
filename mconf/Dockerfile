@@ -78,7 +78,7 @@ RUN bash -l -c "git clone git://github.com/mconf/mconf-web.git" && \
     chown -R ${MCONF_USER}:$MCONF_GROUP ${MCONF_ROOT}
 WORKDIR ${MCONF_ROOT}
 #Install mconf
-RUN bash -l -c "bundle install --path vendor/bundle --without=development test"
+RUN bash -l -c "bundle install --path vendor/bundle --without=development test --clean"
 COPY database.yml ${MCONF_ROOT}config/
 COPY setup_conf.yml ${MCONF_ROOT}config/
 RUN bash -l -c "gem install passenger -v 4.0.59" && \
@@ -96,7 +96,7 @@ RUN chmod 755 /*.sh
 RUN touch ${MCONF_ROOT}tmp/restart.txt
 
 USER ${MCONF_USER}
-COPY mconf_backup.sh /
+RUN bash -l -c "bundle clean"
 
 EXPOSE 80
 VOLUME ["/data"]
