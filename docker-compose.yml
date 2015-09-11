@@ -67,6 +67,7 @@ bbb:
      SERVER_NAME: bbb.example.com
      SERVER_SALT: 5ca422de042242086336aa041f26d79e
      VIRTUAL_HOST: bbb.example.com
+     BBB_INSTALL_DEMOS: "yes"
 # proxy:
 #   image: juanluisbaptiste/bigbluebutton-proxy:latest
 #   #build: nginx/
