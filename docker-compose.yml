@@ -1,10 +1,3 @@
-nginx:
-  image: jwilder/nginx-proxy:latest
-  #build: nginx/
-  ports: 
-    - "80:80"
-  volumes:
-    - /var/run/docker.sock:/tmp/docker.sock
 mconf:
   build: mconf
 # If running behind a proxy container, expose the ports instead
@@ -73,5 +66,24 @@ bbb:
      SERVER_NAME: bbb.example.com
      SERVER_SALT: 5ca422de042242086336aa041f26d79e
      VIRTUAL_HOST: bbb.example.com
+# proxy:
+#   image: juanluisbaptiste/bigbluebutton-proxy:latest
+#   #build: nginx/
+#   ports: 
+#     - "80:80"
+#   volumes:
+#     - /var/run/docker.sock:/tmp/docker.sock  
+data:
+  #build: wwwdata/
+  image: ubuntu:14.04
+  volumes:
+  - /var/lib/mysql
+#   - /var/bigbluebutton
+#   - /var/freeswitch
+#   - "mconf/backups:/data/backups"
+  command: /bin/true
+bbbdata:
+  #build: wwwdata/
+  image: ubuntu:14.04
   volumes:
   - /var/bigbluebutton
