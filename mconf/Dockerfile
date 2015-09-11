@@ -92,9 +92,13 @@ USER root
 # Add run script
 COPY run.sh /
 COPY functions.sh /
+COPY mconf_backup.sh /
+COPY mconf_restore.sh /
 RUN chmod 755 /*.sh
 RUN touch ${MCONF_ROOT}tmp/restart.txt
-
+ENV MCONF_DATA_DIR "/data"
+ENV MCONF_BACKUP_DIR "${MCONF_DATA_DIR}/backups"
+RUN mkdir -p ${MCONF_BACKUP_DIR} && chown -R ${MCONF_USER} ${MCONF_DATA_DIR}
 USER ${MCONF_USER}
 RUN bash -l -c "bundle clean"
 

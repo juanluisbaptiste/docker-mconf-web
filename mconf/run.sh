@@ -28,11 +28,17 @@ if [ ! -z $BBB_ENV_SERVER_NAME ]; then
   sudo bash -c "printf '%s\t%s\n' $BBB_PORT_80_TCP_ADDR $BBB_ENV_SERVER_NAME | cat >> /etc/hosts"
 fi
 [ ! -z $BBB_ENV_SERVER_SALT ] && echo -e "Found linked BigBlueButton container, setting MCONF_WEBCONF_SALT to: $BBB_ENV_SERVER_SALT" && MCONF_WEBCONF_SALT=$BBB_ENV_SERVER_SALT
-load_defaults
-#Finish mconf installation
-cd /var/www/mconf-web/
-RAILS_ENV=production bundle exec rake db:drop db:create db:reset
-RAILS_ENV=production bundle exec rake secret:reset
+
+if [ "$MCONF_RESTORE" == "yes" ];then
+  create_db
+  restore_backup
+else
+  load_defaults
+  #Finish mconf installation
+  cd /var/www/mconf-web/
+  RAILS_ENV=production bundle exec rake db:drop db:create db:reset
+  RAILS_ENV=production bundle exec rake secret:reset
+fi
 bundle exec rake RAILS_ENV=production RAILS_GROUPS=assets assets:precompile
 set_virtualhost_name "ServerName" $MCONF_SITE_DOMAIN
 [ "$MCONF_DISABLE_REGISTRATION" == "yes" ] && disable_registration

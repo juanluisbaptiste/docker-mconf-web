@@ -92,3 +92,7 @@ function disable_registration(){
   $mysqlcmd -e "update ${MCONF_DB_NAME}.sites set registration_enabled=0;"
   [ $? -gt 0 ] && echo -e "\n\e[1;31mERROR:\e[0m Couldn't disable user registration !!\n"
 }
+
+function restore_backup(){
+  /mconf_restore.sh $MCONF_RESTORE_FILE
+}
