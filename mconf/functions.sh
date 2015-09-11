@@ -7,7 +7,7 @@
 source /home/mconf/.bash_profile
 
 DEFAULT_MCONF_ADMIN_EMAIL="admin@example.com"
-MCONF_BACKUP_DIR="/var/mconf/backups"
+MCONF_BACKUP_DIR="/data/backups"
 
 [ -z "${MCONF_INSTALL}" ] && MCONF_INSTALL="no"
 
