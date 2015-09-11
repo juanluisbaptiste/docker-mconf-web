@@ -21,6 +21,7 @@ mconf:
       MCONF_ADMIN_NAME: "Admin"
 #      MCONF_SITE_NAME: ""
       MCONF_SITE_DESC: ""
+#      MCONF_SITE_NAME: ""
 #      MCONF_SITE_LOCALE: "es-419"
       MCONF_SITE_DOMAIN: "meet.example.com"
 #       MCONF_SITE_FEEDBACK_URL: ""
