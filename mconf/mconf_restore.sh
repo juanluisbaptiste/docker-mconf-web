@@ -11,10 +11,10 @@ echo -e "Restoring backup file: ${backup_file}"
 tmp_dir=`mktemp -d`
 
 cd $backup_file
-#First uncompress backup file
-# echo -e "Uncompressing..."
-# tar jxf $backup_file -C $tmp_dir
-# [ $? -gt 0 ] && echo -e "Unable to uncompress the backup file." && exit 1
+First uncompress backup file
+echo -e "Uncompressing..."
+tar jxf $backup_file -C $tmp_dir
+[ $? -gt 0 ] && echo -e "Unable to uncompress the backup file." && exit 1
 
 #cd $tmp_dir
 set -x
