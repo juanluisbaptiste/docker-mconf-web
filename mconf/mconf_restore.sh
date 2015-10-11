@@ -10,14 +10,14 @@ echo -e "Restoring backup file: ${backup_file}"
 
 tmp_dir=`mktemp -d`
 
-cd $backup_file
+#cd $backup_file
 #First uncompress backup file
-# echo -e "Uncompressing..."
-# tar jxf $backup_file -C $tmp_dir
-# [ $? -gt 0 ] && echo -e "Unable to uncompress the backup file." && exit 1
+echo -e "Uncompressing..."
+tar jxf $backup_file -C $tmp_dir
+[ $? -gt 0 ] && echo -e "Unable to uncompress the backup file." && exit 1
 
 #cd $tmp_dir
-set -x
+#set -x
 #Restore database sql dump
 $mysqlcmd ${MCONF_DB_NAME} -e "select * from users;" > /dev/null 2>&1
 [ $? -eq 0 ] && echo -e "${MCONF_DB_NAME} database is not empty." && exit 1
