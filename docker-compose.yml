@@ -13,7 +13,9 @@ mconf:
   volumes_from:
   - data
   environment:
-#      MCONF_INSTALL: "yes"
+# If you want to restore a backup, uncomment this:  
+#       MCONF_RESTORE: "yes"
+#       MCONF_RESTORE_FILE: "09-11-2015_03-03"
       MCONF_DB_PASSWORD: changeme
       MCONF_ADMIN_USERNAME: root
       MCONF_ADMIN_PASSWORD: changeme
