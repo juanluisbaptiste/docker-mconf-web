@@ -33,6 +33,9 @@ bundle exec rake RAILS_ENV=production RAILS_GROUPS=assets assets:precompile
 set_virtualhost_name "ServerName" $MCONF_SITE_DOMAIN
 [ "$MCONF_DISABLE_REGISTRATION" == "yes" ] && disable_registration
 
+#Set backup dir permissions
+chown -R ${MCONF_USER} ${MCONF_DATA_DIR}
+
 #Launch supervisord
 echo -e "Starting supervisord..."
 sudo supervisord -c /etc/supervisor/supervisord.conf
