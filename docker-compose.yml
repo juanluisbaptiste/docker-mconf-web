@@ -10,8 +10,8 @@ mconf:
   - postfix:postfix
   - redis:redis
   - bbb:bbb
-#   volumes:
-# # If you want to run the installer, uncomment this:
+  volumes_from:
+  - data
   environment:
 #      MCONF_INSTALL: "yes"
       MCONF_DB_PASSWORD: changeme
@@ -39,13 +39,12 @@ mconf:
       MCONF_DISABLE_REGISTRATION: "yes"
 #      MCONF_WEBCONF_VERSION: 0.8
       VIRTUAL_HOST: meet.example.com
-  privileged: true
 mariadb:
   build: mariadb
   expose:
   - "3306"
-  volumes:
-  - /var/lib/mysql
+  volumes_from:
+  - data
   environment:
       MYSQL_ROOT_PASSWORD: changeme
 postfix:
@@ -67,24 +66,21 @@ bbb:
      SERVER_SALT: 5ca422de042242086336aa041f26d79e
      VIRTUAL_HOST: bbb.example.com
      BBB_INSTALL_DEMOS: "yes"
-# proxy:
-#   image: juanluisbaptiste/bigbluebutton-proxy:latest
-#   #build: nginx/
-#   ports: 
-#     - "80:80"
-#   volumes:
-#     - /var/run/docker.sock:/tmp/docker.sock  
+  volumes_from:
+  - data
+proxy:
+  image: juanluisbaptiste/bigbluebutton-proxy:latest
+  #build: nginx/
+  ports: 
+    - "80:80"
+  volumes:
+    - /var/run/docker.sock:/tmp/docker.sock  
 data:
   #build: wwwdata/
   image: ubuntu:14.04
   volumes:
   - /var/lib/mysql
-#   - /var/bigbluebutton
-#   - /var/freeswitch
-#   - "mconf/backups:/data/backups"
-  command: /bin/true
-bbbdata:
-  #build: wwwdata/
-  image: ubuntu:14.04
-  volumes:
   - /var/bigbluebutton
+  - /var/freeswitch
+  - "mconf/backups:/data/backups"
+  command: /bin/true
