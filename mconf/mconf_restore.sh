@@ -2,21 +2,24 @@
 
 . /functions.sh
 
-backup_file=$MCONF_BACKUP_DIR/$1
+#backup_file=$MCONF_BACKUP_DIR/$1
+backup_dir=$MCONF_BACKUP_DIR/$1
 
 [ -z $backup_file ] && echo -e "Backup not found." && exit 1
 
-echo -e "Restoring backup file: ${backup_file}"
+[ ! -d $backup_dir ] && echo -e "Backup not found." && exit 1
+
+echo -e "Restoring Mconf backup: ${backup_dir}"
 
 tmp_dir=`mktemp -d`
 
-#cd $backup_file
 #First uncompress backup file
-echo -e "Uncompressing..."
-tar jxf $backup_file -C $tmp_dir
-[ $? -gt 0 ] && echo -e "Unable to uncompress the backup file." && exit 1
-
-#cd $tmp_dir
+# echo -e "Uncompressing..."
+# tar jvxf $backup_dir/mconf*.bz2 -C $tmp_dir
+# [ $? -gt 0 ] && echo -e "Unable to uncompress the backup file." && exit 1
+# 
+# cd $tmp_dir
+cd $backup_dir
 #set -x
 #Restore database sql dump
 $mysqlcmd ${MCONF_DB_NAME} -e "select * from users;" > /dev/null 2>&1
@@ -29,6 +32,6 @@ $mysqlcmd ${MCONF_DB_NAME} < "$sql_file"
 #Restore files
 echo -e "Restoring files..."
 tar jxf *.tar.bz2 -C /
-[ $? -gt 0 ] && echo -e "Unable to uncompress the backup file." && exit 1
+[ $? -gt 0 ] && echo -e "Unable to uncompress the backup file."
 
 echo -e "Done."
