@@ -7,16 +7,16 @@ notify:
     port: $$SMTP_PORT
     username: $$SMTP_USERNAME
     password: $$SMTP_PASSWORD
-  #downstream:
-    #server: $$DOWNSTREAM_DRONE_SERVER
-    #repositories:
-      #- jbaptiste_cs/ctecsas-mconf-web
-      #- jbaptiste_cs/apukay-mconf-web
-    #token: $$DOWNSTREAM_DRONE_TOKEN
-    #when:
-      #event: push
-      #branch: master
-      #success: true
+  downstream:
+    server: $$DOWNSTREAM_DRONE_SERVER
+    repositories:
+      - jbaptiste_cs/ctecsas-mconf-web
+      - jbaptiste_cs/apukay-mconf-web
+    token: $$DOWNSTREAM_DRONE_TOKEN
+    when:
+      event: push
+      branch: master
+      success: true
 publish:
   docker:
     username: $$DOCKER_USER
