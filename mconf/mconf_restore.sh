@@ -5,7 +5,7 @@
 #backup_file=$MCONF_BACKUP_DIR/$1
 backup_dir=$MCONF_BACKUP_DIR/$1
 
-[ -z $backup_file ] && echo -e "Backup not found." && exit 1
+set -x 
 
 [ ! -d $backup_dir ] && echo -e "Backup not found." && exit 1
 
