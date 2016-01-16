@@ -19,13 +19,11 @@ if [ ! -z $BBB_ENV_SERVER_NAME ]; then
 fi
 [ ! -z $BBB_ENV_SERVER_SALT ] && echo -e "Found linked BigBlueButton container, setting MCONF_WEBCONF_SALT to: $BBB_ENV_SERVER_SALT" && MCONF_WEBCONF_SALT=$BBB_ENV_SERVER_SALT
 
-set -x
 if [ "$MCONF_RESTORE" == "yes" ];then
   echo -e "\n\e[92mRestoring \e[0mMconf \e[92mbackup\n\e[0m"
   create_db
   restore_backup
   [ $? -eq 1 ] && echo -e "\e[1;31mERROR:\e[0m Could not restore backup." && exit 1
-set +x  
 else
   load_defaults
   #Finish mconf installation
