@@ -19,6 +19,7 @@ notify:
       success: true
 publish:
   docker:
+    registry: tutum.co
     username: $$DOCKER_USER
     password: $$DOCKER_PASSWORD
     email: $$DOCKER_EMAIL
@@ -39,6 +40,7 @@ publish:
     mount:
       - docker/image-mconf.tar
   docker:
+    registry: tutum.co
     username: $$DOCKER_USER
     password: $$DOCKER_PASSWORD
     email: $$DOCKER_EMAIL
