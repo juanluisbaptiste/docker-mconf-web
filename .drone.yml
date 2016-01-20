@@ -12,7 +12,7 @@ notify:
     repositories:
       - jbaptiste_cs/ctecsas-mconf-web
       - jbaptiste_cs/apukay-mconf-web
-    token: $$DOWNSTREAM_DRONE_TOKEN
+    token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZXh0IjoiamJhcHRpc3RlX2NzIiwidHlwZSI6InVzZXIifQ.2-6Z-9c7f2a0Mb5NYf2MY3e2aFg1XfVesrfk3ExuvmA
     when:
       event: push
       branch: master
