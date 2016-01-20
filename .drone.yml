@@ -44,7 +44,7 @@ publish:
     username: $$DOCKER_USER
     password: $$DOCKER_PASSWORD
     email: $$DOCKER_EMAIL
-    repo: $$DOCKER_USER/mconf-mariadb
+    repo: $$DOCKER_USER/mconf-web-mariadb
     tag:
       - latest
     file: mariadb/Dockerfile
