@@ -82,7 +82,5 @@ data:
   image: centos/mariadb:latest
   volumes:
   - /var/lib/mysql
-  - /var/bigbluebutton
-  - /var/freeswitch
-  - "mconf/backups:/data/backups"
+  - "./mconf/backups:/data/backups"
   command: /bin/true
