@@ -79,7 +79,7 @@ proxy:
     - /var/run/docker.sock:/tmp/docker.sock  
 data:
   #build: wwwdata/
-  image: ubuntu:14.04
+  image: centos/mariadb:latest
   volumes:
   - /var/lib/mysql
   - /var/bigbluebutton
