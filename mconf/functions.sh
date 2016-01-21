@@ -108,5 +108,6 @@ function disable_registration(){
 }
 
 function restore_backup(){
+  set -x
   /mconf_restore.sh $MCONF_RESTORE_FILE
 }
