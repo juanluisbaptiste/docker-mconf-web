@@ -4,7 +4,7 @@ mconf:
 # and link the proxy container to this one.
   expose:   
 #   ports:
-  - "80:80"
+  - "80"
   links:
   - mariadb:mariadb
   - postfix:postfix
