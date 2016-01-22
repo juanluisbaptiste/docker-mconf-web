@@ -10,6 +10,7 @@ ENV MCONF_USER mconf
 ENV MCONF_GROUP www-data
 ENV MCONF_ROOT /var/www/mconf-web/
 ENV MCONF_DB_NAME mconf
+ENV MCONF_SHA1=708b09447a5e05a0d008a8520d31eb7c5a5c64d2
 
 RUN apt-get -y update
 RUN apt-get -y dist-upgrade
@@ -77,6 +78,8 @@ WORKDIR /var/www
 RUN bash -l -c "git clone git://github.com/mconf/mconf-web.git" && \
     chown -R ${MCONF_USER}:$MCONF_GROUP ${MCONF_ROOT}
 WORKDIR ${MCONF_ROOT}
+RUN bash -l -c "git checkout ${MCONF_SHA1}"
+
 #Install mconf
 RUN bash -l -c "bundle install --path vendor/bundle --without=development test --clean"
 COPY database.yml ${MCONF_ROOT}config/
