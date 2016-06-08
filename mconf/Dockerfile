@@ -10,7 +10,8 @@ ENV MCONF_USER mconf
 ENV MCONF_GROUP www-data
 ENV MCONF_ROOT /var/www/mconf-web/
 ENV MCONF_DB_NAME mconf
-ENV MCONF_SHA1=708b09447a5e05a0d008a8520d31eb7c5a5c64d2
+#ENV MCONF_VERSION=708b09447a5e05a0d008a8520d31eb7c5a5c64d2
+ENV MCONF_VERSION=2.1.0
 
 RUN apt-get -y update
 RUN apt-get -y dist-upgrade
@@ -74,12 +75,13 @@ RUN bash -l -c "rbenv install 2.2.0" && \
 RUN bash -l -c "gem install bundler -v '1.7.2'" && \
     bash -l -c "rbenv rehash"
 WORKDIR /var/www
+RUN wget https://github.com/mconf/mconf-web/archive/v2.1.0.tar.gz && \
+    mkdir ${MCONF_ROOT} && tar zxf v*.tar.gz -C ${MCONF_ROOT} --strip-components 1
 #Download mconf latest
-RUN bash -l -c "git clone git://github.com/mconf/mconf-web.git" && \
-    chown -R ${MCONF_USER}:$MCONF_GROUP ${MCONF_ROOT}
+# RUN bash -l -c "git clone git://github.com/mconf/mconf-web.git" && \
+#     chown -R ${MCONF_USER}:$MCONF_GROUP ${MCONF_ROOT}
 WORKDIR ${MCONF_ROOT}
-RUN bash -l -c "git checkout ${MCONF_SHA1}"
-
+#RUN bash -l -c "git checkout ${MCONF_VERSION}"
 #Install mconf
 RUN bash -l -c "bundle install --path vendor/bundle --without=development test --clean"
 COPY database.yml ${MCONF_ROOT}config/
