@@ -10,18 +10,19 @@ ENV MCONF_USER mconf
 ENV MCONF_GROUP www-data
 ENV MCONF_ROOT /var/www/mconf-web/
 ENV MCONF_DB_NAME mconf
+ENV MCONF_DATA_DIR "/data"
+ENV MCONF_BACKUP_DIR "${MCONF_DATA_DIR}/backups"
 #ENV MCONF_VERSION=708b09447a5e05a0d008a8520d31eb7c5a5c64d2
-ENV MCONF_VERSION=2.1.0
+ENV MCONF_VERSION=v2.1.0
 
 RUN apt-get -y update
 RUN apt-get -y dist-upgrade
-RUN apt-get install -y apache2 apache2-prefork-dev libapr1-dev libaprutil1-dev \
-    libcurl4-openssl-dev libapache2-mod-xsendfile wget make curl \ 
-    git-core libruby aspell-es aspell-en libxml2-dev monit logrotate \
-    libxslt1-dev libmagickcore-dev libmagickwand-dev imagemagick libmysqlclient-dev \
-    zlib1g-dev build-essential nfs-common libqtwebkit-dev libreadline-dev libffi-dev  \
-    openjdk-7-jre libsqlite3-dev libssl-dev libffi-dev mysql-client vim supervisor
-                      
+RUN apt-get install -y curl make git-core libruby aspell-es aspell-en \
+    libxml2-dev libxslt1-dev libmagickcore-dev libmagickwand-dev \
+    imagemagick libmysqlclient-dev zlib1g-dev build-essential nfs-common \
+    libreadline-dev libffi-dev libcurl4-openssl-dev mysql-server \
+    redis-server openjdk-7-jre apache2 libapache2-mod-xsendfile \
+    apache2-dev monit supervisor wget
 COPY /etc/supervisor/conf.d/httpd.conf /etc/supervisor/conf.d/
 COPY /etc/supervisor/conf.d/monit.conf /etc/supervisor/conf.d/
 
@@ -61,11 +62,14 @@ RUN wget https://raw.github.com/mconf/mconf-web/master/config/logrotate/mconf-we
 
 #Mconf installation
 USER ${MCONF_USER}
-RUN git clone git://github.com/sstephenson/rbenv.git ~/.rbenv && \
+#Install renv
+RUN git clone git://github.com/rbenv/rbenv.git ~/.rbenv && \
     echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile &&  \
-    echo 'eval "$(rbenv init -)"' >> ~/.bash_profile
+    echo 'eval "$(rbenv init -)"' >> ~/.bash_profile && \
+    bash -l -c "source ~/.bash_profile"
+
 # install ruby build
-RUN git clone git://github.com/sstephenson/ruby-build.git ~/.rbenv/plugins/ruby-build
+RUN git clone git://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
 # install ruby
 RUN bash -l -c "rbenv install 2.2.0" && \
     bash -l -c "rbenv rehash" && \
@@ -75,18 +79,21 @@ RUN bash -l -c "rbenv install 2.2.0" && \
 RUN bash -l -c "gem install bundler -v '1.7.2'" && \
     bash -l -c "rbenv rehash"
 WORKDIR /var/www
-RUN wget https://github.com/mconf/mconf-web/archive/v2.1.0.tar.gz && \
-    mkdir ${MCONF_ROOT} && tar zxf v*.tar.gz -C ${MCONF_ROOT} --strip-components 1
-#Download mconf latest
-# RUN bash -l -c "git clone git://github.com/mconf/mconf-web.git" && \
-#     chown -R ${MCONF_USER}:$MCONF_GROUP ${MCONF_ROOT}
+#Download mconf MCONF_VERSION
+RUN bash -l -c "git clone git://github.com/mconf/mconf-web.git" && \
+    chown -R ${MCONF_USER}:$MCONF_GROUP ${MCONF_ROOT}
 WORKDIR ${MCONF_ROOT}
-#RUN bash -l -c "git checkout ${MCONF_VERSION}"
+RUN bash -l -c "git checkout ${MCONF_VERSION}"
 #Install mconf
+USER root
+#update gems before installing passenger as root
+RUN gem install rubygems-update && \
+    update_rubygems
+USER mconf
 RUN bash -l -c "bundle install --path vendor/bundle --without=development test --clean"
 COPY database.yml ${MCONF_ROOT}config/
 COPY setup_conf.yml ${MCONF_ROOT}config/
-RUN bash -l -c "gem install passenger -v 4.0.59" && \
+RUN bash -l -c "gem install rack:1.5.5 passenger:4.0.59" && \
     bash -l -c "rbenv rehash" && \
     bash -l -c "passenger-install-apache2-module -a"
 #Install passenger web server
