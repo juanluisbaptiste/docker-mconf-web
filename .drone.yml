@@ -19,7 +19,6 @@ notify:
       success: true
 publish:
   docker:
-    registry: docker.io
     username: $$DOCKER_USER
     password: $$DOCKER_PASSWORD
     email: $$DOCKER_EMAIL
@@ -40,7 +39,6 @@ publish:
     mount:
       - docker/image-mconf.tar
   docker:
-    registry: docker.io
     username: $$DOCKER_USER
     password: $$DOCKER_PASSWORD
     email: $$DOCKER_EMAIL
