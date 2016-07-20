@@ -67,7 +67,7 @@ function set_variables(){
   [ ! -z "${MCONF_SITE_SIGNATURE}" ] && echo "MCONF_SITE_SIGNATURE set to '$MCONF_SITE_SIGNATURE'" && set_variable "site" "signature" "$MCONF_SITE_SIGNATURE"
   [ ! -z "${MCONF_SITE_SSL}" ] && echo "MCONF_SITE_SSL set to '$MCONF_SITE_SSL'" && set_variable "site" "ssl" $MCONF_SITE_SSL
   [ ! -z "${MCONF_WEBCONF_NAME}" ] && echo "MCONF_WEBCONF_NAME set to '$MCONF_WEBCONF_NAME'" && set_variable "webconf_server" "name" "$MCONF_WEBCONF_NAME"
-  [ ! -z "${MCONF_WEBCONF_URL}" ] && echo "MCONF_WEBCONF_URL set to '$MCONF_WEBCONF_URL'" && set_variable "webconf_server" "url" "$MCONF_WEBCONF_URL"
+#  [ ! -z "${MCONF_WEBCONF_URL}" ] && echo "MCONF_WEBCONF_URL set to '$MCONF_WEBCONF_URL'" && set_variable "webconf_server" "url" "$MCONF_WEBCONF_URL"
   [ ! -z "${MCONF_WEBCONF_SERVER}" ] && echo "MCONF_WEBCONF_SERVER set to '$MCONF_WEBCONF_SERVER'" && set_variable "webconf_server" "url" "http:\/\/$MCONF_WEBCONF_SERVER\/bigbluebutton\/api"
   [ ! -z "${MCONF_WEBCONF_SALT}" ] && echo "MCONF_WEBCONF_SALT set to '$MCONF_WEBCONF_SALT'" && set_variable "webconf_server" "salt" "$MCONF_WEBCONF_SALT"
   [ ! -z "${MCONF_WEBCONF_VERSION}" ] && echo "MCONF_WEBCONF_VERSION set to '$MCONF_WEBCONF_VERSION'" && set_variable "webconf_server" "version" "$MCONF_WEBCONF_VERSION"
