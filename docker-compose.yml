@@ -24,7 +24,7 @@ mconf:
 #      MCONF_SITE_NAME: ""
       MCONF_SITE_DESC: ""
 #      MCONF_SITE_LOCALE: "es-419"
-      MCONF_SITE_DOMAIN: "meet.example.com"
+      MCONF_SITE_DOMAIN: "mconf.example.com"
 #       MCONF_SITE_FEEDBACK_URL: ""
 #       MCONF_SITE_ANALYTICS_CODE:
 #       MCONF_SITE_SMTP_SERVER:
@@ -40,7 +40,7 @@ mconf:
       MCONF_WEBCONF_SERVER: "bbb.example.com"
       MCONF_DISABLE_REGISTRATION: "yes"
 #      MCONF_WEBCONF_VERSION: 0.8
-      VIRTUAL_HOST: meet.example.com
+      VIRTUAL_HOST: mconf.example.com
 mariadb:
   build: mariadb
   expose:
