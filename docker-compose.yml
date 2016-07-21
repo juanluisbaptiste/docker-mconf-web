@@ -42,7 +42,7 @@ mconf:
 #      MCONF_WEBCONF_VERSION: 0.8
       VIRTUAL_HOST: mconf.example.com
 mariadb:
-  build: mariadb
+  image: centos/mariadb:latest
   expose:
   - "3306"
   volumes_from:
