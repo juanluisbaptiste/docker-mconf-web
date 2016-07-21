@@ -25,6 +25,7 @@ publish:
     repo: $$DOCKER_USER/mconf-web
     tag:
       - latest
+      - 2.1.0-$${COMMIT:0:8}
     file: mconf/Dockerfile
     context: mconf
     load: docker/image-mconf.tar
