@@ -15,9 +15,9 @@ ENV MCONF_BACKUP_DIR "${MCONF_DATA_DIR}/backups"
 #ENV MCONF_VERSION=708b09447a5e05a0d008a8520d31eb7c5a5c64d2
 ENV MCONF_VERSION=v2.1.0
 
-RUN apt-get -y update
-RUN apt-get -y dist-upgrade
-RUN apt-get install -y curl make git-core libruby aspell-es aspell-en \
+RUN apt-get -y update && \
+    apt-get -y dist-upgrade && \
+    apt-get install -y curl make git-core libruby aspell-es aspell-en \
     libxml2-dev libxslt1-dev libmagickcore-dev libmagickwand-dev \
     imagemagick libmysqlclient-dev zlib1g-dev build-essential nfs-common \
     libreadline-dev libffi-dev libcurl4-openssl-dev mysql-server \
@@ -33,18 +33,14 @@ RUN a2enmod rewrite && \
     a2enmod xsendfile && \
     a2ensite mconf-web
 
-#Create mconf user
+#Create mconf user, create backup scrpts directories and add to sudoers
 RUN useradd -ms /bin/bash ${MCONF_USER} && \
     adduser ${MCONF_USER} $MCONF_GROUP && \
-    chown -R ${MCONF_USER}:$MCONF_GROUP /var/www/
-
-#Create backup scrpts directories
-RUN mkdir -p /opt/mconf/{scripts,backups}/ && \ 
+    chown -R ${MCONF_USER}:$MCONF_GROUP /var/www/ && \
+    mkdir -p /opt/mconf/{scripts,backups}/ && \
     mkdir -p /opt/mconf/var/tmp && \
-    touch /opt/mconf/var/tmp/firsttime
-
-#Add to sudoers
-RUN echo "${MCONF_USER} ALL=(ALL) NOPASSWD:ALL"  >> /etc/sudoers
+    touch /opt/mconf/var/tmp/firsttime && \
+    echo "${MCONF_USER} ALL=(ALL) NOPASSWD:ALL"  >> /etc/sudoers
 
 #Configure monit
 RUN sed -i -re 's/(daemon)\s+\w+/\1 60/gi' /etc/monit/monitrc && \
@@ -68,15 +64,13 @@ RUN git clone git://github.com/rbenv/rbenv.git ~/.rbenv && \
     echo 'eval "$(rbenv init -)"' >> ~/.bash_profile && \
     bash -l -c "source ~/.bash_profile"
 
-# install ruby build
-RUN git clone git://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build
-# install ruby
-RUN bash -l -c "rbenv install 2.2.0" && \
+# install ruby build and bundler
+RUN git clone git://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build && \
+    bash -l -c "rbenv install 2.2.0" && \
     bash -l -c "rbenv rehash" && \
     bash -l -c "rbenv global 2.2.0" && \
-    bash -l -c "rbenv version"
-# install bundler
-RUN bash -l -c "gem install bundler -v '1.7.2'" && \
+    bash -l -c "rbenv version" && \
+    bash -l -c "gem install bundler -v '1.7.2'" && \
     bash -l -c "rbenv rehash"
 WORKDIR /var/www
 #Download mconf MCONF_VERSION
@@ -95,10 +89,9 @@ COPY database.yml ${MCONF_ROOT}config/
 COPY setup_conf.yml ${MCONF_ROOT}config/
 RUN bash -l -c "gem install rack:1.5.5 passenger:4.0.59" && \
     bash -l -c "rbenv rehash" && \
-    bash -l -c "passenger-install-apache2-module -a"
-#Install passenger web server
-RUN bash -l -c "passenger-install-apache2-module --snippet | sudo tee /etc/apache2/conf-available/mconf-passenger.conf"
-RUN sudo a2enconf mconf-passenger
+    bash -l -c "passenger-install-apache2-module -a" && \
+    bash -l -c "passenger-install-apache2-module --snippet | sudo tee /etc/apache2/conf-available/mconf-passenger.conf" && \
+    sudo a2enconf mconf-passenger
 
 USER root
 # Add run script
@@ -106,9 +99,9 @@ COPY run.sh /
 COPY functions.sh /
 COPY mconf_backup.sh /
 COPY mconf_restore.sh /
-RUN chmod 755 /*.sh
-RUN touch ${MCONF_ROOT}tmp/restart.txt
-RUN mkdir -p ${MCONF_BACKUP_DIR} && chown -R ${MCONF_USER} ${MCONF_DATA_DIR}
+RUN chmod 755 /*.sh && \
+    touch ${MCONF_ROOT}tmp/restart.txt && \
+    mkdir -p ${MCONF_BACKUP_DIR} && chown -R ${MCONF_USER} ${MCONF_DATA_DIR}
 USER ${MCONF_USER}
 RUN bash -l -c "bundle clean"
 
