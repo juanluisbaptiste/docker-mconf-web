@@ -38,21 +38,3 @@ publish:
   cache:
     mount:
       - docker/image-mconf.tar
-  docker:
-    username: $$DOCKER_USER
-    password: $$DOCKER_PASSWORD
-    email: $$DOCKER_EMAIL
-    repo: $$DOCKER_USER/mconf-web-mariadb
-    tag:
-      - latest
-    file: mariadb/Dockerfile
-    context: mariadb
-    load: docker/image-mariadb.tar
-    save:
-      destination: docker/image-mariadb.tar
-      tag: latest
-    environment:
-      - DOCKER_LAUNCH_DEBUG=true
-  cache:
-    mount:
-      - docker/image-mariadb.tar
