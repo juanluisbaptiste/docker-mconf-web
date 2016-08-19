@@ -20,16 +20,15 @@ RUN apt-get -y update && \
     apt-get install -y curl make git-core libruby aspell-es aspell-en \
     libxml2-dev libxslt1-dev libmagickcore-dev libmagickwand-dev \
     imagemagick libmysqlclient-dev zlib1g-dev build-essential nfs-common \
-    libreadline-dev libffi-dev libcurl4-openssl-dev mysql-server \
-    redis-server openjdk-7-jre apache2 libapache2-mod-xsendfile \
+    libreadline-dev libffi-dev libcurl4-openssl-dev mysql-client \
+    openjdk-7-jre apache2 libapache2-mod-xsendfile \
     apache2-dev monit supervisor wget
-COPY /etc/supervisor/conf.d/httpd.conf /etc/supervisor/conf.d/
-COPY /etc/supervisor/conf.d/monit.conf /etc/supervisor/conf.d/
+COPY /etc/supervisor/conf.d/*.conf /etc/supervisor/conf.d/
 
 #Add apache2 configuration
 COPY etc/apache2/apache2.conf /etc/apache2/
 COPY etc/apache2/sites-available/mconf-web.conf /etc/apache2/sites-available/
-RUN a2enmod rewrite && \ 
+RUN a2enmod rewrite && \
     a2enmod xsendfile && \
     a2ensite mconf-web
 
@@ -51,7 +50,7 @@ RUN sed -i -re 's/(daemon)\s+\w+/\1 60/gi' /etc/monit/monitrc && \
     sed -i -e "s/\/mconf-web\/current/\/mconf-web/g" /etc/monit/conf.d/resque_workers.monitrc
 
 #configure logrotate
-RUN wget https://raw.github.com/mconf/mconf-web/master/config/logrotate/mconf-web -O /etc/logrotate.d/mconf-web && \ 
+RUN wget https://raw.github.com/mconf/mconf-web/master/config/logrotate/mconf-web -O /etc/logrotate.d/mconf-web && \
     chown root:root /etc/logrotate.d/mconf-web && \
     chmod 644 /etc/logrotate.d/mconf-web && \
     logrotate -s /var/lib/logrotate/status /etc/logrotate.d/mconf-web
