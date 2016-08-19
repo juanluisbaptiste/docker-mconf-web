@@ -47,7 +47,7 @@ function random_string(){
 }
 
 function set_variables(){
-  [ -z "${MCONF_DB_PASSWORD}" ] && MCONF_DB_PASSWORD=`${DEFAULT_PASSWORD}` && echo "MCONF_DB_PASSWORD not set, setting password to '$MCONF_DB_PASSWORD'"
+  [ -z "${MCONF_DB_PASSWORD}" ] && MCONF_DB_PASSWORD="${DEFAULT_PASSWORD}" && echo "MCONF_DB_PASSWORD not set, setting password to '$MCONF_DB_PASSWORD'"
   [ ! -z "${MCONF_ADMIN_USERNAME}" ] && echo "MCONF_ADMIN_USERNAME set to '$MCONF_ADMIN_USERNAME'" && set_variable "admin" "username" $MCONF_ADMIN_USERNAME
   [ ! -z "${MCONF_ADMIN_EMAIL}" ] && echo "MCONF_ADMIN_EMAIL set to '$MCONF_ADMIN_EMAIL'" && set_variable "admin" "email" $MCONF_ADMIN_EMAIL
   [ ! -z "${MCONF_ADMIN_PASSWORD}" ] && echo "MCONF_ADMIN_PASSWORD set to '$MCONF_ADMIN_PASSWORD'" && set_variable "admin" "password" $MCONF_ADMIN_PASSWORD
