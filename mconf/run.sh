@@ -26,10 +26,14 @@ if [ "$MCONF_RESTORE" == "yes" ];then
   [ $? -eq 1 ] && echo -e "\e[1;31mERROR:\e[0m Could not restore backup." && exit 1
 else
   load_defaults
-  #Finish mconf installation
-  cd /var/www/mconf-web/
-  RAILS_ENV=production bundle exec rake db:drop db:create db:reset
-  RAILS_ENV=production bundle exec rake secret:reset
+  #Check if database exists
+  $mysqlcmd -e "use ${MCONF_DB_NAME}"
+  if [ $? -gt 0 ]; then
+    #Finish mconf installation
+    cd /var/www/mconf-web/
+    RAILS_ENV=production bundle exec rake db:drop db:create db:reset
+    RAILS_ENV=production bundle exec rake secret:reset
+  fi
 fi
 bundle exec rake RAILS_ENV=production RAILS_GROUPS=assets assets:precompile
 set_virtualhost_name "ServerName" $MCONF_SITE_DOMAIN
