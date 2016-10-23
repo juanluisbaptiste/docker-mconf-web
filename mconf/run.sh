@@ -27,7 +27,7 @@ if [ "$MCONF_RESTORE" == "yes" ];then
 else
   load_defaults
   #Check if database exists
-  $mysqlcmd -e "use ${MCONF_DB_NAME}"
+  $mysqlcmd -e "select * from ${MCONF_DB_NAME}.users"
   if [ $? -gt 0 ]; then
     #Finish mconf installation
     cd /var/www/mconf-web/
