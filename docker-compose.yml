@@ -70,6 +70,7 @@ bbb:
      BBB_INSTALL_DEMOS: "yes"
   volumes_from:
    - data
+  privileged: yes
 proxy:
   image: juanluisbaptiste/bigbluebutton-proxy:latest
   #build: nginx/
