@@ -18,7 +18,7 @@ mysqldumpcmd="mysqldump $mysql_params"
 
 function wait_for_database(){
   while true; do
-    out="`$mysqlcmd -e "SELECT COUNT(*) FROM mysql.user;" 2>&1`"
+    out="`$mysqlcmd -e "SELECT version();" 2>&1`"
     echo -e $out
     echo "$out" | grep "COUNT"
     if [ $? -eq 0 ]; then
