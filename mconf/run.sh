@@ -26,8 +26,8 @@ if [ "$MCONF_RESTORE" == "yes" ];then
   [ $? -eq 1 ] && echo -e "\e[1;31mERROR:\e[0m Could not restore backup." && exit 1
 else
   load_defaults
-  #Check if database exists
-  $mysqlcmd -e "select * from ${MCONF_DB_NAME}.users"
+  #Check if database is empty
+  $mysqlcmd -e "select count(*) from ${MCONF_DB_NAME}"
   #Finish mconf installation
   cd /var/www/mconf-web/ || (echo -e "ERROR: Webroot is empty!" && exit 1)
   RAILS_ENV=production bundle exec rake db:drop db:create db:reset
