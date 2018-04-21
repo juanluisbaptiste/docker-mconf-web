@@ -52,7 +52,7 @@ default:
   webconf_server:
     name: "Default Server"
     url: "http://bbb/bigbluebutton/api"
-    salt: "my-secret-salt"
+    secret: "my-secret-salt"
     version: "0.8"
 
   # If you're running redis on the same server and without a password, you
