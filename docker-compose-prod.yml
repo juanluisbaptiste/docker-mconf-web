@@ -40,6 +40,7 @@ mconf:
       #MCONF_WEBCONF_SERVER: "bbb.example.com"
       MCONF_DISABLE_REGISTRATION: "yes"
       VIRTUAL_HOST: mconf.example.com
+      MYSQL_ROOT_PASSWORD: changeme
 mariadb:
   image: centos/mariadb:latest
   expose:
