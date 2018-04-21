@@ -89,5 +89,8 @@ services:
     #- ./volumes/mconf:/var/www/mconf-web/
     - /var/bigbluebutton
     - /var/freeswitch
+    - ./volumes/mconf-web/attachments:/var/www/mconf-web/private/attachments/
+    - ./volumes/mconf-web/private_uploads:/var/www/mconf-web/private/uploads/
+    - ./volumes/mconf-web/public_uploads:/var/www/mconf-web/public/uploads/
     #- config.sh:/config.sh
     command: /bin/true
