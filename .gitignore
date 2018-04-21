@@ -1,0 +1,4 @@
+backups
+volumes
+*.env
+*~
