@@ -13,7 +13,7 @@ ENV MCONF_DB_NAME mconf
 ENV MCONF_DATA_DIR "/data"
 ENV MCONF_BACKUP_DIR "${MCONF_DATA_DIR}/backups"
 #ENV MCONF_VERSION=708b09447a5e05a0d008a8520d31eb7c5a5c64d2
-ENV MCONF_VERSION=v2.1.0
+ENV MCONF_VERSION=v2.5.0
 
 RUN apt-get -y update && \
     apt-get -y dist-upgrade && \
@@ -65,9 +65,9 @@ RUN git clone git://github.com/rbenv/rbenv.git ~/.rbenv && \
 
 # install ruby build and bundler
 RUN git clone git://github.com/rbenv/ruby-build.git ~/.rbenv/plugins/ruby-build && \
-    bash -l -c "rbenv install 2.2.0" && \
+    bash -l -c "rbenv install 2.2.5" && \
     bash -l -c "rbenv rehash" && \
-    bash -l -c "rbenv global 2.2.0" && \
+    bash -l -c "rbenv global 2.2.5" && \
     bash -l -c "rbenv version" && \
     bash -l -c "gem install bundler -v '1.7.2'" && \
     bash -l -c "rbenv rehash"
@@ -80,8 +80,8 @@ RUN bash -l -c "git checkout ${MCONF_VERSION}"
 #Install mconf
 USER root
 #update gems before installing passenger as root
-RUN gem install rubygems-update && \
-    update_rubygems
+# RUN gem install rubygems-update && \
+#     update_rubygems
 USER mconf
 RUN bash -l -c "bundle install --path vendor/bundle --without=development test --clean"
 COPY database.yml ${MCONF_ROOT}config/
