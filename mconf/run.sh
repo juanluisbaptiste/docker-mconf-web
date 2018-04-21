@@ -28,12 +28,15 @@ else
   load_defaults
   #Check if database is empty
   $mysqlcmd -e "select count(*) from ${MCONF_DB_NAME}"
-  #Finish mconf installation
-  cd /var/www/mconf-web/ || (echo -e "ERROR: Webroot is empty!" && exit 1)
-  RAILS_ENV=production bundle exec rake db:drop db:create db:reset
-  RAILS_ENV=production bundle exec rake secret:reset
+  if [ $? -gt 0 ]; then
+    #Finish mconf installation
+    cd /var/www/mconf-web/ || (echo -e "ERROR: Webroot is empty!" && exit 1)
+    RAILS_ENV=production bundle exec rake db:drop db:create db:reset
+    RAILS_ENV=production bundle exec rake secret:reset
+  fi
 fi
-bundle exec rake RAILS_ENV=production RAILS_GROUPS=assets assets:precompile
+bu
+ndle exec rake RAILS_ENV=production RAILS_GROUPS=assets assets:precompile
 set_virtualhost_name "ServerName" $MCONF_SITE_DOMAIN
 [ "$MCONF_DISABLE_REGISTRATION" == "yes" ] && disable_registration
 
