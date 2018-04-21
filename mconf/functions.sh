@@ -70,7 +70,7 @@ function set_variables(){
   [ ! -z "${MCONF_WEBCONF_NAME}" ] && echo "MCONF_WEBCONF_NAME set to '$MCONF_WEBCONF_NAME'" && set_variable "webconf_server" "name" "$MCONF_WEBCONF_NAME"
 #  [ ! -z "${MCONF_WEBCONF_URL}" ] && echo "MCONF_WEBCONF_URL set to '$MCONF_WEBCONF_URL'" && set_variable "webconf_server" "url" "$MCONF_WEBCONF_URL"
   [ ! -z "${MCONF_WEBCONF_SERVER}" ] && echo "MCONF_WEBCONF_SERVER set to '$MCONF_WEBCONF_SERVER'" && set_variable "webconf_server" "url" "http:\/\/$MCONF_WEBCONF_SERVER\/bigbluebutton\/api"
-  [ ! -z "${MCONF_WEBCONF_SALT}" ] && echo "MCONF_WEBCONF_SALT set to '$MCONF_WEBCONF_SALT'" && set_variable "webconf_server" "salt" "$MCONF_WEBCONF_SALT"
+  [ ! -z "${MCONF_WEBCONF_SALT}" ] && echo "MCONF_WEBCONF_SALT set to '$MCONF_WEBCONF_SALT'" && set_variable "webconf_server" "secret" "$MCONF_WEBCONF_SALT"
   [ ! -z "${MCONF_WEBCONF_VERSION}" ] && echo "MCONF_WEBCONF_VERSION set to '$MCONF_WEBCONF_VERSION'" && set_variable "webconf_server" "version" "$MCONF_WEBCONF_VERSION"
   [ ! -z "${MCONF_REDIS_HOST}" ] && echo "MCONF_REDIS_HOST set to '$MCONF_REDIS_HOST'" && set_variable "redis" "host" "$MCONF_REDIS_HOST"
   [ ! -z "${MCONF_REDIS_PORT}" ] && echo "MCONF_REDIS_PORT set to '$MCONF_REDIS_PORT'" && set_variable "redis" "port" "$MCONF_REDIS_PORT"
