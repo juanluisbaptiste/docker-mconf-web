@@ -35,13 +35,13 @@ else
     RAILS_ENV=production bundle exec rake secret:reset
   fi
 fi
-bu
-ndle exec rake RAILS_ENV=production RAILS_GROUPS=assets assets:precompile
+bundle exec rake RAILS_ENV=production RAILS_GROUPS=assets assets:precompile
 set_virtualhost_name "ServerName" $MCONF_SITE_DOMAIN
 [ "$MCONF_DISABLE_REGISTRATION" == "yes" ] && disable_registration
 
-#Set backup dir permissions
-chown -R ${MCONF_USER} ${MCONF_DATA_DIR}
+#Set dir permissions
+sudo chown -R ${MCONF_USER} ${MCONF_BACKUP_DIR}
+sudo chown -R ${MCONF_USER} ${MCONF_ROOT}
 
 #Launch supervisord
 echo -e "Starting supervisord..."
