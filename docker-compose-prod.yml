@@ -9,7 +9,7 @@ mconf:
   - mariadb:mariadb
   - postfix:postfix
   - redis:redis
-  - bbb:bbb
+  # - bbb:bbb
   volumes_from:
    - data
   environment:
@@ -55,20 +55,20 @@ postfix:
    env_file: credentials-smtp.env
 redis:
    image: redis:latest
-bbb:
-  image: juanluisbaptiste/bigbluebutton:latest
-  expose:
-  - "80"
-  ports:
-  - "9123:9123"
-  - "1935:1935"
-  environment:
-     SERVER_NAME: bbb.example.com
-     SERVER_SALT: 5ca422de042242086336aa041f26d79e
-     VIRTUAL_HOST: bbb.example.com
-     BBB_INSTALL_DEMOS: "yes"
-  volumes_from:
-   - data
+# bbb:
+#   image: juanluisbaptiste/bigbluebutton:latest
+#   expose:
+#   - "80"
+#   ports:
+#   - "9123:9123"
+#   - "1935:1935"
+#   environment:
+#      SERVER_NAME: bbb.example.com
+#      SERVER_SALT: 5ca422de042242086336aa041f26d79e
+#      VIRTUAL_HOST: bbb.example.com
+#      BBB_INSTALL_DEMOS: "yes"
+#   volumes_from:
+#    - data
 proxy:
   image: juanluisbaptiste/bigbluebutton-proxy:latest
   ports:
