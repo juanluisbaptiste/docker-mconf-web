@@ -12,7 +12,6 @@ notify:
     repositories:
       - jbaptiste_cs/ctecsas-mconf-web
       - jbaptiste_cs/apukay-mconf-web
-      - jbaptiste_cs/akam-mconf-web
     token: $$DOWNSTREAM_DRONE_TOKEN
     when:
       event: push
