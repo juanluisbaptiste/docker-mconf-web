@@ -28,12 +28,10 @@ else
   load_defaults
   #Check if database exists
   $mysqlcmd -e "select * from ${MCONF_DB_NAME}.users"
-  if [ $? -gt 0 ]; then
-    #Finish mconf installation
-    cd /var/www/mconf-web/
-    RAILS_ENV=production bundle exec rake db:drop db:create db:reset
-    RAILS_ENV=production bundle exec rake secret:reset
-  fi
+  #Finish mconf installation
+  cd /var/www/mconf-web/ || (echo -e "ERROR: Webroot is empty!" && exit 1)
+  RAILS_ENV=production bundle exec rake db:drop db:create db:reset
+  RAILS_ENV=production bundle exec rake secret:reset
 fi
 bundle exec rake RAILS_ENV=production RAILS_GROUPS=assets assets:precompile
 set_virtualhost_name "ServerName" $MCONF_SITE_DOMAIN
