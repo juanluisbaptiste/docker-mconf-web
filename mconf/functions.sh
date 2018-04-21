@@ -12,7 +12,7 @@ MCONF_BACKUP_DIR="/data/backups"
 
 [ -z "${MCONF_INSTALL}" ] && MCONF_INSTALL="no"
 
-mysql_params="-uroot -h $MARIADB_PORT_3306_TCP_ADDR -p$MARIADB_ENV_MYSQL_ROOT_PASSWORD "
+mysql_params="-uroot -h mariadb -p$MYSQL_ROOT_PASSWORD "
 mysqlcmd="mysql $mysql_params"
 mysqldumpcmd="mysqldump $mysql_params"
 
@@ -20,7 +20,7 @@ function wait_for_database(){
   while true; do
     out="`$mysqlcmd -e "SELECT version();" 2>&1`"
     echo -e $out
-    echo "$out" | grep "COUNT"
+    echo "$out" | grep "MariaDB"
     if [ $? -eq 0 ]; then
       echo -e "\n\e[92mServer is up !\e[0m\n"
       break
