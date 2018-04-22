@@ -4,7 +4,9 @@
 # The script by default loads a fresh Mconf install ready to be used. 
 #
 
-[[ "${DEBUG}" == "yes" ]] && set -x
+if [ "${DEBUG}" == "yes" ]; then
+  set -x
+fi
 
 . /functions.sh
 
