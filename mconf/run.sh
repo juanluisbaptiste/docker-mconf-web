@@ -39,8 +39,6 @@ else
     RAILS_ENV=production bundle exec rake secret:reset
   fi
 fi
-bundle exec rake RAILS_ENV=production RAILS_GROUPS=assets assets:precompile
-[ $? -eq 1 ] && echo -e "\e[1;31mERROR:\e[0m Could not compile web assets." && exit 1
 
 set_virtualhost_name "ServerName" $MCONF_SITE_DOMAIN
 [ "$MCONF_DISABLE_REGISTRATION" == "yes" ] && disable_registration
@@ -50,6 +48,9 @@ sudo chown -R ${MCONF_USER} ${MCONF_BACKUP_DIR}
 [ $? -eq 1 ] && echo -e "\e[1;31mERROR:\e[0m Could not change permissions for: ${MCONF_BACKUP_DIR}" && exit 1
 sudo chown -R ${MCONF_USER} ${MCONF_ROOT}
 [ $? -eq 1 ] && echo -e "\e[1;31mERROR:\e[0m Could not change permissions for: ${MCONF_ROOT}" && exit 1
+
+bundle exec rake RAILS_ENV=production RAILS_GROUPS=assets assets:precompile
+[ $? -eq 1 ] && echo -e "\e[1;31mERROR:\e[0m Could not compile web assets." && exit 1
 
 #Launch supervisord
 echo -e "Starting supervisord..."
