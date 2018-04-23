@@ -1,11 +1,12 @@
 #!/bin/bash
-# Startup script for this Mconf container. 
+# Startup script for this Mconf container.
 #
-# The script by default loads a fresh Mconf install ready to be used. 
+# The script by default loads a fresh Mconf install ready to be used.
 #
 
 if [ "${DEBUG}" == "yes" ]; then
   set -x
+  env
 fi
 
 . /functions.sh
