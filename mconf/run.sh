@@ -31,8 +31,8 @@ if [ "$MCONF_RESTORE" == "yes" ];then
 else
   load_defaults
   #Check if database is empty
-  $mysqlcmd -e "select count(*) from ${MCONF_DB_NAME}"
-  if [ $? -eq 0 ]; then
+  $mysqlcmd -e "select count(*) from ${MCONF_DB_NAME}.users"
+  if [ $? -gt 0 ]; then
     #Finish mconf installation
     cd /var/www/mconf-web/ || (echo -e "ERROR: Webroot is empty!" && exit 1)
     RAILS_ENV=production bundle exec rake db:drop db:create db:reset
